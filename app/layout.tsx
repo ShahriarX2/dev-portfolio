@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, JetBrains_Mono, Montserrat } from "next/font/google";
+import Navbar from "@/components/Navbar";
 import "./globals.css";
+import { cn } from "@/lib/utils";
+
+const montserratHeading = Montserrat({subsets:['latin'],variable:'--font-heading'});
+
+const jetbrainsMono = JetBrains_Mono({subsets:['latin'],variable:'--font-mono'});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,15 +25,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="en" className={cn("font-mono", jetbrainsMono.variable, montserratHeading.variable)}>
+      <body className="bg-black text-white">
+        <Navbar />
+        {children}
+      </body>
     </html>
   );
 }
