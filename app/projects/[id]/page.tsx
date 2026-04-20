@@ -8,7 +8,14 @@ import { ViewTransition } from "react";
 import { VscArrowLeft, VscGlobe } from "react-icons/vsc";
 import { Magnetic } from "@/components/ui/Magnetic";
 
+export async function generateStaticParams() {
+  return projects.map((project) => ({
+    id: project.id,
+  }));
+}
+
 export default function ProjectPage({ params }: { params: Promise<{ id: string }> }) {
+
   const { id } = use(params);
   const project = projects.find((p) => p.id === id);
   const router = useRouter();
