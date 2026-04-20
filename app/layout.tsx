@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import { FloatingDock } from "@/components/ui/floating-dock";
 import ShapeGrid from "@/components/ShapeGrid";
 import { SmoothScroll } from "@/components/ui/SmoothScroll";
+import TerminalLogo from "@/components/TerminalLogo";
 
 const montserratHeading = Montserrat({
   subsets: ["latin"],
@@ -103,6 +104,12 @@ export default function RootLayout({
           </div>
 
           {children}
+
+          <div className="fixed top-6 left-0 right-0 z-50 flex justify-center pointer-events-none">
+            <div className="pointer-events-auto bg-neutral-950/50 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full">
+              <TerminalLogo fontSize="text-sm" />
+            </div>
+          </div>
 
           <FloatingDock
             items={items}
