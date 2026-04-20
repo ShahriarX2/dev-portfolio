@@ -33,7 +33,7 @@ function ProjectClient({ id }: { id: string }) {
         >
           <VscArrowLeft className="h-4 w-4" />
           Back to Projects
-        </button same-line
+        </button>
 
         <ViewTransition name={`project-${project.id}`} share="morph">
           <section className="relative overflow-hidden rounded-[3rem] border border-white/10 bg-white/5 backdrop-blur-xl">
