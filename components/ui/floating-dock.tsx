@@ -47,6 +47,7 @@ const FloatingDockMobile = ({
 }) => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
   const [, startTransition] = useTransition();
 
   const handleNavigate = (href: string) => {
