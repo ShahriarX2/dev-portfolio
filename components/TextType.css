@@ -1,0 +1,50 @@
+.text-type {
+  display: block;
+  position: relative;
+  white-space: pre-wrap;
+}
+
+.text-type__inner {
+  display: grid;
+}
+
+.text-type__measure,
+.text-type__live {
+  grid-area: 1 / 1;
+}
+
+.text-type__measure {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.text-type__content {
+  display: inline;
+}
+
+.text-type__cursor {
+  margin-left: 0.25rem;
+  display: inline-block;
+  opacity: 1;
+  animation: text-type-cursor-blink var(--text-type-cursor-blink-duration, 0.5s)
+    ease-in-out infinite alternate;
+}
+
+.text-type__cursor--hidden {
+  opacity: 0;
+  animation: none;
+}
+
+.text-type__cursor--placeholder {
+  animation: none;
+}
+
+@keyframes text-type-cursor-blink {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}

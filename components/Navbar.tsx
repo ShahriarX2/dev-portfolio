@@ -1,11 +1,40 @@
+"use client";
+
+import {
+  VscHome,
+  VscArchive,
+  VscAccount,
+  VscSettingsGear,
+} from "react-icons/vsc";
+import { FloatingDock } from "@/components/ui/floating-dock";
+
 export default function Navbar() {
+  const items = [
+    {
+      icon: <VscHome size={18} />,
+      title: "Home",
+      href: "/",
+    },
+    {
+      icon: <VscArchive size={18} />,
+      title: "Archive",
+      href: "/archive",
+    },
+    {
+      icon: <VscAccount size={18} />,
+      title: "Profile",
+      href: "/profile",
+    },
+    {
+      icon: <VscSettingsGear size={18} />,
+      title: "Settings",
+      href: "/settings",
+    },
+  ];
+
   return (
-    <nav className="flex justify-between p-4 border-b border-gray-800">
-      <h1 className="font-bold">My Portfolio</h1>
-      <div className="space-x-4">
-        <a href="#projects">Projects</a>
-        <a href="#about">About</a>
-      </div>
+    <nav>
+      <FloatingDock items={items} />
     </nav>
   );
 }

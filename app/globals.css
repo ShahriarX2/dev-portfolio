@@ -81,6 +81,10 @@
   --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.705 0.015 286.067);
+
+  --duration-exit: 150ms;
+  --duration-enter: 210ms;
+  --duration-move: 400ms;
 }
 
 .dark {
@@ -126,5 +130,190 @@
   }
   html {
     @apply font-mono;
+  }
+}
+
+@keyframes hero-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(2%, -3%, 0) scale(1.04);
+  }
+
+  100% {
+    transform: translate3d(-1%, 2%, 0) scale(1);
+  }
+}
+
+@keyframes hero-float {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(-18px, 16px, 0);
+  }
+
+  100% {
+    transform: translate3d(10px, -14px, 0);
+  }
+}
+
+@keyframes fade {
+  from { filter: blur(3px); opacity: 0; }
+  to { filter: blur(0); opacity: 1; }
+}
+
+@keyframes slide {
+  from { translate: var(--slide-offset); }
+  to { translate: 0; }
+}
+
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -10%); }
+  20% { transform: translate(-15%, 5%); }
+  30% { transform: translate(7%, -25%); }
+  40% { transform: translate(-5%, 25%); }
+  50% { transform: translate(-15%, 10%); }
+  60% { transform: translate(15%, 0%); }
+  70% { transform: translate(0%, 15%); }
+  80% { transform: translate(3%, 35%); }
+  90% { transform: translate(-10%, 10%); }
+}
+
+@layer utilities {
+  .grain-overlay {
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    right: -50%;
+    bottom: -50%;
+    width: 200%;
+    height: 200%;
+    background-image: url("/assets/grain.webp");
+    background-repeat: repeat;
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 9999;
+    animation: grain 8s steps(10) infinite;
+  }
+
+  .hero-background {
+    background:
+      radial-gradient(circle at 18% 22%, rgba(53, 163, 186, 0.16), transparent 24%),
+      radial-gradient(circle at 76% 26%, rgba(80, 166, 255, 0.2), transparent 22%),
+      radial-gradient(circle at 82% 38%, rgba(129, 89, 255, 0.14), transparent 20%),
+      linear-gradient(135deg, #030508 0%, #071018 42%, #030405 100%);
+  }
+
+  .hero-grid-mask {
+    mask-image:
+      linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.45) 20%, black 42%, black 100%),
+      radial-gradient(circle at 78% 34%, black 0%, black 28%, transparent 70%);
+    mask-composite: intersect;
+    -webkit-mask-image:
+      linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.45) 20%, black 42%, black 100%),
+      radial-gradient(circle at 78% 34%, black 0%, black 28%, transparent 70%);
+    -webkit-mask-composite: source-in;
+  }
+
+  .hero-grid-sheen {
+    background:
+      linear-gradient(90deg, rgba(3, 5, 8, 0.94) 0%, rgba(3, 5, 8, 0.78) 34%, rgba(3, 5, 8, 0.38) 58%, rgba(3, 5, 8, 0.72) 100%);
+  }
+
+  .hero-left-vignette {
+    background:
+      radial-gradient(circle at 22% 24%, rgba(7, 22, 30, 0.2), transparent 36%),
+      linear-gradient(90deg, rgba(2, 4, 7, 0.85) 0%, rgba(2, 4, 7, 0.35) 40%, transparent 72%);
+  }
+
+  .hero-card-glow {
+    background:
+      radial-gradient(circle at center, rgba(85, 214, 255, 0.28) 0%, rgba(101, 110, 255, 0.18) 34%, rgba(120, 74, 255, 0.12) 56%, transparent 76%);
+    filter: blur(22px);
+    animation: hero-drift 16s ease-in-out infinite alternate;
+  }
+
+  .hero-card-orb {
+    background:
+      radial-gradient(circle at 35% 35%, rgba(126, 240, 255, 0.8), rgba(126, 240, 255, 0.18) 28%, rgba(96, 94, 255, 0.14) 52%, transparent 72%);
+    filter: blur(10px);
+    animation: hero-float 12s ease-in-out infinite alternate;
+  }
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* View Transition Styles */
+::view-transition-old(.fade-out) {
+  animation: var(--duration-exit) ease-in fade reverse;
+}
+::view-transition-new(.fade-in) {
+  animation: var(--duration-enter) ease-out var(--duration-exit) both fade;
+}
+
+::view-transition-old(.nav-forward) {
+  --slide-offset: -60px;
+  animation:
+    var(--duration-exit) ease-in both fade reverse,
+    var(--duration-move) ease-in-out both slide reverse;
+}
+::view-transition-new(.nav-forward) {
+  --slide-offset: 60px;
+  animation:
+    var(--duration-enter) ease-out var(--duration-exit) both fade,
+    var(--duration-move) ease-in-out both slide;
+}
+
+::view-transition-old(.nav-back) {
+  --slide-offset: 60px;
+  animation:
+    var(--duration-exit) ease-in both fade reverse,
+    var(--duration-move) ease-in-out both slide reverse;
+}
+::view-transition-new(.nav-back) {
+  --slide-offset: -60px;
+  animation:
+    var(--duration-enter) ease-out var(--duration-exit) both fade,
+    var(--duration-move) ease-in-out both slide;
+}
+
+::view-transition-group(.morph) {
+  animation-duration: var(--duration-move);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-card-glow,
+  .hero-card-orb {
+    animation: none;
+  }
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
   }
 }
